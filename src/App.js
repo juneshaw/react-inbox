@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Messages from './components/Messages'
 
-const messages = [{message: "message1"}]
+const messages = [{text: "message1"}]
 
 class App extends Component {
 
