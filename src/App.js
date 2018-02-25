@@ -5,7 +5,10 @@ import Messages from './components/Messages'
 import Toolbar from './components/Toolbar'
 
 const messages =
-  [{text: "message1"}, {text: "message2"}]
+  [
+    {text: "message1", read: false, starred: false, selected: false},
+    {text: "message2", read: false, starred: false, selected: false}
+  ]
 
 class App extends Component {
 
