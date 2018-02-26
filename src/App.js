@@ -7,7 +7,8 @@ import Toolbar from './components/Toolbar'
 const messages =
   [
     {text: "message1", read: true, starred: false, selected: false},
-    {text: "message2", read: false, starred: false, selected: false}
+    {text: "message2", read: false, starred: true, selected: false},
+    {text: "message3", read: false, starred: false, selected: true}
   ]
 
 class App extends Component {
