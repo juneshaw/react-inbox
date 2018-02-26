@@ -1,12 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 
-const Toolbar = () => {
+const Toolbar = ({messages}) => {
   return (
     <div className="row toolbar">
       <div className="col-md-12">
         <p className="pull-right">
-          <span className="badge badge">2</span>
+          <span className="badge badge">
+            {messages.filter((message) => {return !message.read}).length}
+          </span>
           unread messages
         </p>
 
