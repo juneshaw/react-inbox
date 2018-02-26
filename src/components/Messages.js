@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom'
 import Message from './Message'
 
 class Messages extends React.Component {
@@ -12,9 +12,10 @@ class Messages extends React.Component {
   render() {
     return (
       <div className="container">
-        {this.state.messages.map((message) => {
+        {this.state.messages.map((message, i) => {
           return (
-            <Message message={message} />
+            <Message key={i}
+              message={message} />
           )
         })}
       </div>
