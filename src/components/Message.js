@@ -17,7 +17,7 @@ const Message = ({message, handler}) => {
             <input type="checkbox" checked={message.selected}/>
           </div>
           <div className="col-xs-2">
-            <i className={`star fa ${message.starred ? 'fa-star' : 'fa-star-o'}`} onClick={starHandler}></i>
+            <i id='star' data-id={message.id} name='star' className={`star fa ${message.starred ? 'fa-star' : 'fa-star-o'}`} onClick={starHandler}></i>
           </div>
         </div>
       </div>

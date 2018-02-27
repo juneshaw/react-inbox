@@ -10,7 +10,7 @@ class Messages extends React.Component {
   }
 
   handleChange = (request) => {
-    alert('i got to the messages handler!' + request.target.name)
+    alert('i got to the messages handler!' + request.target.dataset.id + " " + request.target.id)
     // let updatedItems = [...this.state.items];
     // let itemIndex = this.state.items.findIndex((item) => item.product.id === request.product.id)
     // if (itemIndex > -1) {
@@ -27,7 +27,8 @@ class Messages extends React.Component {
       <div className="container">
         {this.state.messages.map((message, i) => {
           return (
-            <Message key={i}
+            <Message
+              key={i}
               message={message}
               handler={this.handleChange}/>
           )
