@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 
-const Message = ({message, handler}) => {
+const Message = ({message, messagesHandler}) => {
 
-  const starHandler = (evt) => {
-    handler(evt);
+  const handler = (evt) => {
+    messagesHandler(evt);
   }
 
   return (
@@ -14,10 +14,10 @@ const Message = ({message, handler}) => {
       <div className="col-xs-1">
         <div className="row">
           <div className="col-xs-2">
-            <input type="checkbox" checked={message.selected}/>
+            <input type="checkbox" id='select' data-id={message.id} checked={message.selected} onClick={handler}/>
           </div>
           <div className="col-xs-2">
-            <i id='star' data-id={message.id} name='star' className={`star fa ${message.starred ? 'fa-star' : 'fa-star-o'}`} onClick={starHandler}></i>
+            <i id='star' data-id={message.id} className={`star fa ${message.starred ? 'fa-star' : 'fa-star-o'}`} onClick={handler}></i>
           </div>
         </div>
       </div>

@@ -30,7 +30,7 @@ class Messages extends React.Component {
             <Message
               key={i}
               message={message}
-              handler={this.handleChange}/>
+              messagesHandler={this.handleChange}/>
           )
         })}
       </div>
