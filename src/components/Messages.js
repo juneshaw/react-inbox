@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Message from './Message'
 
 class Messages extends React.Component {
@@ -9,17 +8,29 @@ class Messages extends React.Component {
     this.state = {messages: props.messages}
   }
 
+  findMessage = (id) => this.state.messages.findIndex((message) => (message.id === parseInt(id, 10)))
+
   handleChange = (request) => {
-    alert('i got to the messages handler!' + request.target.dataset.id + " " + request.target.id)
-    // let updatedItems = [...this.state.items];
-    // let itemIndex = this.state.items.findIndex((item) => item.product.id === request.product.id)
-    // if (itemIndex > -1) {
-    //   let item = updatedItems[itemIndex]
-    //   item.quantity = parseInt(item.quantity, 10) + parseInt(request.quantity, 10)
+    let updatedMessages = [...this.state.messages]
+    let messageIndex = this.findMessage(request.target.dataset.id)
+    if (messageIndex > -1) {
+      let message = updatedMessages[messageIndex]
+      switch (request.target.id) {
+        case 'star': {
+          message.starred = !message.starred
+          break
+        }
+        case 'select': {
+          message.selected = !message.selected
+          break
+        }
+        default: break
+      }
+      this.setState({...this.state, messages:updatedMessages})
+    }
     // } else {
-    //   updatedItems.push(request)
+    //   updatedMessages.push(message)
     // }
-    // this.setState({...this.state, items:updatedItems})
   }
 
   render() {

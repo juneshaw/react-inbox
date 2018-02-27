@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom';
 
 const Message = ({message, messagesHandler}) => {
 
@@ -14,7 +13,7 @@ const Message = ({message, messagesHandler}) => {
       <div className="col-xs-1">
         <div className="row">
           <div className="col-xs-2">
-            <input type="checkbox" id='select' data-id={message.id} checked={message.selected} onClick={handler}/>
+            <input type="checkbox" id='select' data-id={message.id} checked={message.selected} onChange={handler}/>
           </div>
           <div className="col-xs-2">
             <i id='star' data-id={message.id} className={`star fa ${message.starred ? 'fa-star' : 'fa-star-o'}`} onClick={handler}></i>
