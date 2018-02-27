@@ -24,6 +24,10 @@ class Messages extends React.Component {
           message.selected = !message.selected
           break
         }
+        case 'read': {
+          message.read = true
+          break
+        }
         default: break
       }
       this.setState({...this.state, messages:updatedMessages})
