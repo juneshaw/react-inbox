@@ -1,6 +1,18 @@
 import React from 'react'
 
-const Toolbar = ({messages}) => {
+const Toolbar = ({messages, toolbarHandler}) => {
+
+  const selectIconClasses = ({messages}) => {
+    let selectedMessages = messages.filter((message) => {return message.selected})
+    if (selectedMessages.length === messages.length) {
+      return "fa fa-check-square-o"
+    } else if (selectedMessages.length === 0) {
+      return "fa fa-square-o"
+    } else {
+      return "fa fa-minus-square-o"
+    }
+  }
+
   return (
     <div className="row toolbar">
       <div className="col-md-12">
@@ -15,8 +27,10 @@ const Toolbar = ({messages}) => {
           <i className="fa fa-plus"></i>
         </a>
 
-        <button className="btn btn-default">
-          <i className="fa fa-minus-square-o"></i>
+        <button
+          className="btn btn-default"
+          onClick={toolbarHandler}>
+          <i className={selectIconClasses({messages})}></i>
         </button>
 
         <button className="btn btn-default">Mark As Read</button>

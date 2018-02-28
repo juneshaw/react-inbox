@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Messages from './components/Messages'
-import Toolbar from './components/Toolbar'
 
 const messages =
   [
@@ -23,7 +22,6 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <Toolbar messages={messages}/>
         <Messages messages={messages}/>
       </div>
     );

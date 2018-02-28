@@ -1,4 +1,5 @@
 import React from 'react'
+import Toolbar from './Toolbar'
 import Message from './Message'
 
 class Messages extends React.Component {
@@ -10,7 +11,7 @@ class Messages extends React.Component {
 
   findMessage = (id) => this.state.messages.findIndex((message) => (message.id === parseInt(id, 10)))
 
-  handleChange = (request) => {
+  handleMessageChange = (request) => {
     let updatedMessages = [...this.state.messages]
     let messageIndex = this.findMessage(request.target.dataset.id)
     if (messageIndex > -1) {
@@ -37,15 +38,23 @@ class Messages extends React.Component {
     // }
   }
 
+  handleToolbarChange = (request) => {
+    alert('made it to toolbar change handler')
+    
+  }
+
   render() {
     return (
       <div className="container">
+        <Toolbar
+          messages={this.state.messages}
+          toolbarHandler={this.handleToolbarChange}/>
         {this.state.messages.map((message, i) => {
           return (
             <Message
               key={i}
               message={message}
-              messagesHandler={this.handleChange}/>
+              messagesHandler={this.handleMessageChange}/>
           )
         })}
       </div>
