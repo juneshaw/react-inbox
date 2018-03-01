@@ -41,6 +41,34 @@ class Messages extends React.Component {
     // }
   }
 
+  handleToolbarChange = (request) => {
+    let messages = this.state.messages
+    switch (request.target.id) {
+      case "mark_as_read": {
+        messages = this.state.messages.map((message) =>
+           message.selected  ? {...message, read: true} : message)
+        break
+      }
+      case "mark_as_unread": {
+        messages = this.state.messages.map((message) =>
+           message.selected  ? {...message, read: false} : message)
+        break
+      }
+      case "apply_label": {
+        let newLabel = request.target.value
+        let messages = this.state.messages.map((message) =>
+           message.selected && (message.labels.findIndex((label) => (label.text === newLabel)) < 0) ?
+           {...message, labels: message.labels.push({text:newLabel})} :
+           message)
+        break
+      }
+      default: {
+        break
+      }
+    }
+    this.setState({...this.state, messages})
+  }
+
   render() {
     return (
       <div className="container">

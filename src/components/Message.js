@@ -4,7 +4,7 @@ const Message = ({message, messagesHandler}) => {
 
   return (
     <div className={`row message
-                    ${message.read ? 'read' : 'unread'}
+                    ${message.read ? "read" : "unread"}
                     ${message.selected ? 'selected' : 'unselected'}`}>
       <div className="col-xs-1">
         <div className="row">
@@ -19,7 +19,12 @@ const Message = ({message, messagesHandler}) => {
       <div className="col-xs-11">
         {message.labels.map((label, i) => {
           return (
-            <span key={i} className="label label-warning">{label.text}</span>
+            <span
+              key={i}
+              className="label label-warning"
+              data-label={label.text}>
+              {label.text}
+            </span>
           )
         })}
         <a href="#">
