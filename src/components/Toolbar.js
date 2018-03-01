@@ -2,15 +2,17 @@ import React from 'react'
 
 const Toolbar = ({messages, toolbarHandler}) => {
 
-  const selectIconClasses = ({messages}) => {
+  const whichSelected = () => {
+    let whichSelected
     let selectedMessages = messages.filter((message) => {return message.selected})
     if (selectedMessages.length === messages.length) {
-      return "fa fa-check-square-o"
+      whichSelected = "fa fa-check-square-o"
     } else if (selectedMessages.length === 0) {
-      return "fa fa-square-o"
+      whichSelected = "fa fa-square-o"
     } else {
-      return "fa fa-minus-square-o"
+      whichSelected = "fa fa-minus-square-o"
     }
+    return whichSelected
   }
 
   return (
@@ -30,7 +32,8 @@ const Toolbar = ({messages, toolbarHandler}) => {
         <button
           className="btn btn-default"
           onClick={toolbarHandler}>
-          <i className={selectIconClasses({messages})}></i>
+          <i className={whichSelected()}>
+          </i>
         </button>
 
         <button className="btn btn-default">Mark As Read</button>

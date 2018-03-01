@@ -6,7 +6,10 @@ class Messages extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {messages: props.messages}
+    this.state = {
+      messages: props.messages,
+      allSelected: false
+    }
   }
 
   findMessage = (id) => this.state.messages.findIndex((message) => (message.id === parseInt(id, 10)))
@@ -38,17 +41,14 @@ class Messages extends React.Component {
     // }
   }
 
-  handleToolbarChange = (request) => {
-    alert('made it to toolbar change handler')
-    
-  }
-
   render() {
     return (
       <div className="container">
         <Toolbar
           messages={this.state.messages}
-          toolbarHandler={this.handleToolbarChange}/>
+          allSelected={this.state.allSelected}
+          toolbarHandler={this.handleToolbarChange}
+        />
         {this.state.messages.map((message, i) => {
           return (
             <Message
