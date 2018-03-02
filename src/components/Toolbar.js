@@ -42,6 +42,15 @@ const Toolbar = ({messages, toolbarHandler}) => {
     return selectedStyle
   }
 
+  const handleAddLabel = (evt) => {
+    toolbarHandler(evt)
+    document.getElementById('apply_label').selectedIndex=0
+  }
+
+  const handleRemoveLabel = (evt) => {
+    toolbarHandler(evt)
+    document.getElementById('remove_label').selectedIndex=0
+  }
   return (
     <div className="row toolbar">
       <div
@@ -79,36 +88,17 @@ const Toolbar = ({messages, toolbarHandler}) => {
         <select
           className="form-control label-select"
           id="apply_label"
-          onChange={toolbarHandler}>
+          onChange={handleAddLabel}>
           <option disabled="disabled" selected="selected">Apply label</option>
           <option value="dev">dev</option>
           <option value="personal">personal</option>
           <option value="gschool">gschool</option>
         </select>
 
-        {/* <form onSubmit={toolbarHandler}>
-          <Input
-            id="apply_label"
-            type="select"
-            name="label"
-            className="form-control label-select"
-          >
-            {labels.map((label,i) =>
-              <option
-                value={label.text}
-                key={i}
-              >
-                {label.text}
-              </option>
-            )}
-          </Input>
-          <button className='form-control label-select' type="submit">Apply Label</button>
-        </form> */}
-
         <select
           className="form-control label-select"
           id="remove_label"
-          onChange={toolbarHandler}>
+          onChange={handleRemoveLabel}>
           <option disabled="disabled" selected="selected">Remove label</option>
           <option value="dev">dev</option>
           <option value="personal">personal</option>
