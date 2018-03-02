@@ -1,18 +1,45 @@
 import React from 'react'
+import Enum from "es6-enum"
 
 const Toolbar = ({messages, toolbarHandler}) => {
 
-  const whichSelected = () => {
-    let whichSelected
+  const SELECTTYPE = Enum("NONE", "SOME", "ALL")
+
+  const labels = [
+    {text: 'dev'}, {text: 'personal'}, {text: 'gschool'}
+  ]
+
+  const selectedType = () => {
+    let selectedType
     let selectedMessages = messages.filter((message) => {return message.selected})
     if (selectedMessages.length === messages.length) {
-      whichSelected = "fa fa-check-square-o"
+      selectedType = SELECTTYPE.NONE
     } else if (selectedMessages.length === 0) {
-      whichSelected = "fa fa-square-o"
+      selectedType = SELECTTYPE.ALL
     } else {
-      whichSelected = "fa fa-minus-square-o"
+      selectedType = SELECTTYPE.SOME
     }
-    return whichSelected
+    return selectedType
+  }
+
+  const selectedStyle = () => {
+    let selectedStyle
+    switch (selectedType()) {
+      case SELECTTYPE.ALL: {
+        selectedStyle = "fa fa-check-square-o"
+        break
+      }
+      case SELECTTYPE.NONE: {
+        selectedStyle = "fa fa-square-o"
+        break
+      }
+      case SELECTTYPE.SOME: {
+        selectedStyle = "fa fa-minus-square-o"
+        break
+      }
+      default: break
+    }
+    return selectedStyle
   }
 
   return (
@@ -32,7 +59,7 @@ const Toolbar = ({messages, toolbarHandler}) => {
 
         <button
           className="btn btn-default">
-          <i className={whichSelected()}>
+          <i className={selectedStyle()}>
           </i>
         </button>
 
@@ -52,18 +79,37 @@ const Toolbar = ({messages, toolbarHandler}) => {
         <select
           className="form-control label-select"
           id="apply_label"
-          onChange={toolbarHandler}
-          value="foobar">
-          <option>Apply label</option>
+          onChange={toolbarHandler}>
+          <option disabled="disabled" selected="selected">Apply label</option>
           <option value="dev">dev</option>
           <option value="personal">personal</option>
           <option value="gschool">gschool</option>
         </select>
 
+        {/* <form onSubmit={toolbarHandler}>
+          <Input
+            id="apply_label"
+            type="select"
+            name="label"
+            className="form-control label-select"
+          >
+            {labels.map((label,i) =>
+              <option
+                value={label.text}
+                key={i}
+              >
+                {label.text}
+              </option>
+            )}
+          </Input>
+          <button className='form-control label-select' type="submit">Apply Label</button>
+        </form> */}
+
         <select
           className="form-control label-select"
-          id="remove_label">
-          <option>Remove label</option>
+          id="remove_label"
+          onChange={toolbarHandler}>
+          <option disabled="disabled" selected="selected">Remove label</option>
           <option value="dev">dev</option>
           <option value="personal">personal</option>
           <option value="gschool">gschool</option>
