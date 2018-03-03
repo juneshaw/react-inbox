@@ -48,11 +48,11 @@ class Messages extends React.Component {
     switch (request.target.id) {
       case "select_messages": {
         newMessages = this.state.messages.map((message) =>
-          (this.state.selected === SELECTTYPE.NONE ||
-          this.state.selected === SELECTTYPE.SOME) ?
+          (selectedType(this.state.messages) === SELECTTYPE.NONE ||
+          selectedType(this.state.messages) === SELECTTYPE.SOME) ?
           {...message, selected: true} :
           {...message, selected: false})
-        this.setState({...this.state, messages: newMessages, selected: selectedType(newMessages)})
+        this.setState({...this.state, messages: newMessages})
         break
       }
       case "mark_as_read": {
