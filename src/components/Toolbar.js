@@ -70,8 +70,8 @@ const Toolbar = ({messages, toolbarHandler}) => {
         <button
           className="btn btn-default">
           <i
-            className={selectedStyle()}
             id="select_messages"
+            className={selectedStyle()}
             onClick={toolbarHandler}>
           </i>
         </button>
@@ -87,14 +87,14 @@ const Toolbar = ({messages, toolbarHandler}) => {
         <button
           className="btn btn-default"
           id="mark_as_unread"
-          disabled={messages.length === 0}
+          disabled={selectedType(messages) === SELECTTYPE.NONE}
           onClick={toolbarHandler}
           >Mark As Unread</button>
 
         <select
           className="form-control label-select"
           id="apply_label"
-          disabled={messages.length === 0}
+          disabled={selectedType(messages) === SELECTTYPE.NONE}
           onChange={handleAddLabel}>
           <option disabled="disabled" selected="selected">Apply label</option>
           {/* <option value="dev">dev</option>
@@ -110,7 +110,7 @@ const Toolbar = ({messages, toolbarHandler}) => {
         <select
           className="form-control label-select"
           id="remove_label"
-          disabled={messages.length === 0}
+          disabled={selectedType(messages) === SELECTTYPE.NONE}
           onChange={handleRemoveLabel}>
           <option disabled="disabled" selected="selected">Remove label</option>
           <option value="dev">dev</option>
@@ -118,12 +118,13 @@ const Toolbar = ({messages, toolbarHandler}) => {
           <option value="gschool">gschool</option>
         </select>
 
-        <button className="btn btn-default">
+        <button
+          className="btn btn-default">
           <i
             className="fa fa-trash-o"
             id="delete"
-            disabled={messages.length === 0}
-            onClick={toolbarHandler}></i>
+            disabled={selectedType(messages) === SELECTTYPE.NONE}
+            onClick={toolbarHandler} ></i>
         </button>
       </div>
     </div>

@@ -10,7 +10,7 @@ class Messages extends React.Component {
     super(props)
     this.state = {
       messages: props.messages,
-      allSelected: false
+      selected: selectedType(props.messages)
     }
   }
 
@@ -36,7 +36,7 @@ class Messages extends React.Component {
         }
         default: break
       }
-      this.setState({...this.state, messages:updatedMessages})
+      this.setState({...this.state, messages:updatedMessages, selected:selectedType(updatedMessages)})
     }
     // } else {
     //   updatedMessages.push(message)
@@ -44,41 +44,43 @@ class Messages extends React.Component {
   }
 
   handleToolbarChange = (request) => {
-    let messages = this.state.messages
     let newMessages
     switch (request.target.id) {
       case "select_messages": {
-        newMessages = messages.map((message) =>
-          selectedType(messages) === SELECTTYPE.NONE ||
-          selectedType(messages) === SELECTTYPE.SOME ?
+        newMessages = this.state.messages.map((message) =>
+          (this.state.selected === SELECTTYPE.NONE ||
+          this.state.selected === SELECTTYPE.SOME) ?
           {...message, selected: true} :
-          {...message, selected: false}
-        )
+          {...message, selected: false})
+        this.setState({...this.state, messages: newMessages, selected: selectedType(newMessages)})
         break
       }
       case "mark_as_read": {
-        newMessages = messages.map((message) =>
+        newMessages = this.state.messages.map((message) =>
            message.selected  ? {...message, read: true} : message)
+        this.setState({...this.state, messages: newMessages})
         break
       }
       case "mark_as_unread": {
-        newMessages = messages.map((message) =>
+        newMessages = this.state.messages.map((message) =>
            message.selected  ? {...message, read: false} : message)
+           this.setState({...this.state, messages: newMessages})
         break
       }
       case "apply_label": {
         let newLabel = request.target.value
-        newMessages = messages.map((message) => {
+        newMessages = this.state.messages.map((message) => {
           if (message.selected && message.labels.findIndex((label) => (label.text === newLabel)) < 0) {
             message.labels.push({text:newLabel})
           }
           return {...message, labels: message.labels}
         })
+        this.setState({...this.state, messages: newMessages})
         break
       }
       case "remove_label": {
         let newLabel = request.target.value
-        newMessages = messages.map((message) => {
+        newMessages = this.state.messages.map((message) => {
           if (message.selected) {
             let index = message.labels.findIndex((label) => (label.text === newLabel))
             if (index >= 0) {
@@ -87,19 +89,20 @@ class Messages extends React.Component {
           }
           return {...message, labels: message.labels}
         })
+        this.setState({...this.state, messages: newMessages})
         break
       }
       case "delete": {
-        newMessages = messages.filter((message) => {
+        newMessages = this.state.messages.filter((message) => {
           return (!message.selected)
         })
+        this.setState({...this.state, messages: newMessages, selected: selectedType(newMessages)})
         break
       }
       default: {
         break
       }
     }
-    this.setState({...this.state, messages: newMessages})
   }
 
   render() {
@@ -107,8 +110,8 @@ class Messages extends React.Component {
       <div className="container">
         <Toolbar
           messages={this.state.messages}
-          allSelected={this.state.allSelected}
           toolbarHandler={this.handleToolbarChange}
+          selected={this.state.selected}
         />
         {this.state.messages.map((message, i) => {
           return (
