@@ -97,9 +97,6 @@ const Toolbar = ({messages, toolbarHandler}) => {
           disabled={selectedType(messages) === SELECTTYPE.NONE}
           onChange={handleAddLabel}>
           <option disabled="disabled" selected="selected">Apply label</option>
-          {/* <option value="dev">dev</option>
-          <option value="personal">personal</option>
-          <option value="gschool">gschool</option> */}
           {labels.map((label,i) =>
             <option key={i} value={label.text}>
               {label.text}

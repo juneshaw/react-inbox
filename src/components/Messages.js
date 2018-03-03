@@ -111,7 +111,6 @@ class Messages extends React.Component {
         <Toolbar
           messages={this.state.messages}
           toolbarHandler={this.handleToolbarChange}
-          selected={this.state.selected}
         />
         {this.state.messages.map((message, i) => {
           return (
