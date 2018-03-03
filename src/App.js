@@ -5,9 +5,9 @@ import Messages from './components/Messages'
 
 const messages =
   [
-    {id: 1, text: "message1", read: true, starred: false, selected: false, labels:[{text: "label 1.1"}, {text: "label 1.2"}]},
-    {id: 2, text: "message2", read: false, starred: true, selected: false, labels:[{text: "label 2.1"}, {text: "label 2.2"}]},
-    {id: 3, text: "message3", read: false, starred: false, selected: true, labels:[{text: "label 3.1"}, {text: "label 3.2"}]}
+    {id: 1, text: "message1", read: true, starred: false, selected: false, labels:[{text: "dev"}, {text: "personal"}]},
+    {id: 2, text: "message2", read: false, starred: true, selected: false, labels:[{text: "personal"}, {text: "gschool"}]},
+    {id: 3, text: "message3", read: false, starred: false, selected: true, labels:[{text: "dev"}, {text: "gschool"}]}
   ]
 
 class App extends Component {

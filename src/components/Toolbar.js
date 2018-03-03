@@ -52,10 +52,6 @@ const Toolbar = ({messages, toolbarHandler}) => {
     document.getElementById('remove_label').selectedIndex=0
   }
 
-  const handleSelect = (evt) => {
-    toolbarHandler(evt, selectedType(messages))
-  }
-
   return (
     <div className="row toolbar">
       <div
@@ -101,9 +97,14 @@ const Toolbar = ({messages, toolbarHandler}) => {
           disabled={messages.length === 0}
           onChange={handleAddLabel}>
           <option disabled="disabled" selected="selected">Apply label</option>
-          <option value="dev">dev</option>
+          {/* <option value="dev">dev</option>
           <option value="personal">personal</option>
-          <option value="gschool">gschool</option>
+          <option value="gschool">gschool</option> */}
+          {labels.map((label,i) =>
+            <option key={i} value={label.text}>
+              {label.text}
+            </option>
+          )}
         </select>
 
         <select
