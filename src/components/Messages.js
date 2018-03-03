@@ -78,6 +78,12 @@ class Messages extends React.Component {
         })
         break
       }
+      case "delete": {
+        newMessages = messages.filter((message) => {
+          return !message.selected
+        })
+        break
+      }
       default: {
         break
       }

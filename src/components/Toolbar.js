@@ -106,7 +106,10 @@ const Toolbar = ({messages, toolbarHandler}) => {
         </select>
 
         <button className="btn btn-default">
-          <i className="fa fa-trash-o"></i>
+          <i
+            className="fa fa-trash-o"
+            id="delete"
+            onClick={toolbarHandler}></i>
         </button>
       </div>
     </div>
