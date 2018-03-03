@@ -1,5 +1,7 @@
 import React from 'react'
 import Toolbar from './Toolbar'
+import { SELECTTYPE } from './Toolbar'
+import { selectedType } from './Toolbar'
 import Message from './Message'
 
 class Messages extends React.Component {
@@ -45,6 +47,15 @@ class Messages extends React.Component {
     let messages = this.state.messages
     let newMessages
     switch (request.target.id) {
+      case "select_messages": {
+        newMessages = messages.map((message) =>
+          selectedType(messages) === SELECTTYPE.NONE ||
+          selectedType(messages) === SELECTTYPE.SOME ?
+          {...message, selected: true} :
+          {...message, selected: false}
+        )
+        break
+      }
       case "mark_as_read": {
         newMessages = messages.map((message) =>
            message.selected  ? {...message, read: true} : message)
@@ -80,7 +91,7 @@ class Messages extends React.Component {
       }
       case "delete": {
         newMessages = messages.filter((message) => {
-          return !message.selected
+          return (!message.selected)
         })
         break
       }

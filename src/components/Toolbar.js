@@ -1,30 +1,30 @@
 import React from 'react'
 import Enum from "es6-enum"
 
-const Toolbar = ({messages, toolbarHandler}) => {
+const SELECTTYPE = Enum("NONE", "SOME", "ALL")
 
-  const SELECTTYPE = Enum("NONE", "SOME", "ALL")
+const selectedType = (messages) => {
+  let selectedType
+  let selectedMessages = messages.filter((message) => {return message.selected})
+  if (selectedMessages.length === messages.length) {
+    selectedType = SELECTTYPE.ALL
+  } else if (selectedMessages.length === 0) {
+    selectedType = SELECTTYPE.NONE
+  } else {
+    selectedType = SELECTTYPE.SOME
+  }
+  return selectedType
+}
+
+const Toolbar = ({messages, toolbarHandler}) => {
 
   const labels = [
     {text: 'dev'}, {text: 'personal'}, {text: 'gschool'}
   ]
 
-  const selectedType = () => {
-    let selectedType
-    let selectedMessages = messages.filter((message) => {return message.selected})
-    if (selectedMessages.length === messages.length) {
-      selectedType = SELECTTYPE.NONE
-    } else if (selectedMessages.length === 0) {
-      selectedType = SELECTTYPE.ALL
-    } else {
-      selectedType = SELECTTYPE.SOME
-    }
-    return selectedType
-  }
-
   const selectedStyle = () => {
     let selectedStyle
-    switch (selectedType()) {
+    switch (selectedType(messages)) {
       case SELECTTYPE.ALL: {
         selectedStyle = "fa fa-check-square-o"
         break
@@ -51,6 +51,11 @@ const Toolbar = ({messages, toolbarHandler}) => {
     toolbarHandler(evt)
     document.getElementById('remove_label').selectedIndex=0
   }
+
+  const handleSelect = (evt) => {
+    toolbarHandler(evt, selectedType(messages))
+  }
+
   return (
     <div className="row toolbar">
       <div
@@ -68,13 +73,17 @@ const Toolbar = ({messages, toolbarHandler}) => {
 
         <button
           className="btn btn-default">
-          <i className={selectedStyle()}>
+          <i
+            className={selectedStyle()}
+            id="select_messages"
+            onClick={toolbarHandler}>
           </i>
         </button>
 
         <button
           className="btn btn-default"
           id="mark_as_read"
+          disabled={selectedType(messages) === SELECTTYPE.NONE}
           onClick={toolbarHandler}
           >Mark As Read
         </button>
@@ -82,12 +91,14 @@ const Toolbar = ({messages, toolbarHandler}) => {
         <button
           className="btn btn-default"
           id="mark_as_unread"
+          disabled={messages.length === 0}
           onClick={toolbarHandler}
           >Mark As Unread</button>
 
         <select
           className="form-control label-select"
           id="apply_label"
+          disabled={messages.length === 0}
           onChange={handleAddLabel}>
           <option disabled="disabled" selected="selected">Apply label</option>
           <option value="dev">dev</option>
@@ -98,6 +109,7 @@ const Toolbar = ({messages, toolbarHandler}) => {
         <select
           className="form-control label-select"
           id="remove_label"
+          disabled={messages.length === 0}
           onChange={handleRemoveLabel}>
           <option disabled="disabled" selected="selected">Remove label</option>
           <option value="dev">dev</option>
@@ -109,6 +121,7 @@ const Toolbar = ({messages, toolbarHandler}) => {
           <i
             className="fa fa-trash-o"
             id="delete"
+            disabled={messages.length === 0}
             onClick={toolbarHandler}></i>
         </button>
       </div>
@@ -116,4 +129,6 @@ const Toolbar = ({messages, toolbarHandler}) => {
   )
 }
 
+export { selectedType }
+export { SELECTTYPE }
 export default Toolbar
