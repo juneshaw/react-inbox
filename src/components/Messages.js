@@ -9,8 +9,7 @@ class Messages extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      messages: props.messages,
-      selected: selectedType(props.messages)
+      messages: props.messages
     }
   }
 
@@ -36,51 +35,44 @@ class Messages extends React.Component {
         }
         default: break
       }
-      this.setState({...this.state, messages:updatedMessages, selected:selectedType(updatedMessages)})
+      this.setState({...this.state, messages:updatedMessages})
     }
-    // } else {
-    //   updatedMessages.push(message)
-    // }
   }
 
   handleToolbarChange = (request) => {
-    let newMessages
+    let updatedMessages
     switch (request.target.id) {
       case "select_messages": {
-        newMessages = this.state.messages.map((message) =>
+        updatedMessages = this.state.messages.map((message) =>
           (selectedType(this.state.messages) === SELECTTYPE.NONE ||
           selectedType(this.state.messages) === SELECTTYPE.SOME) ?
           {...message, selected: true} :
           {...message, selected: false})
-        this.setState({...this.state, messages: newMessages})
         break
       }
       case "mark_as_read": {
-        newMessages = this.state.messages.map((message) =>
+        updatedMessages = this.state.messages.map((message) =>
            message.selected  ? {...message, read: true} : message)
-        this.setState({...this.state, messages: newMessages})
         break
       }
       case "mark_as_unread": {
-        newMessages = this.state.messages.map((message) =>
+        updatedMessages = this.state.messages.map((message) =>
            message.selected  ? {...message, read: false} : message)
-           this.setState({...this.state, messages: newMessages})
         break
       }
       case "apply_label": {
         let newLabel = request.target.value
-        newMessages = this.state.messages.map((message) => {
+        updatedMessages = this.state.messages.map((message) => {
           if (message.selected && message.labels.findIndex((label) => (label.text === newLabel)) < 0) {
             message.labels.push({text:newLabel})
           }
           return {...message, labels: message.labels}
         })
-        this.setState({...this.state, messages: newMessages})
         break
       }
       case "remove_label": {
         let newLabel = request.target.value
-        newMessages = this.state.messages.map((message) => {
+        updatedMessages = this.state.messages.map((message) => {
           if (message.selected) {
             let index = message.labels.findIndex((label) => (label.text === newLabel))
             if (index >= 0) {
@@ -89,20 +81,19 @@ class Messages extends React.Component {
           }
           return {...message, labels: message.labels}
         })
-        this.setState({...this.state, messages: newMessages})
         break
       }
       case "delete": {
-        newMessages = this.state.messages.filter((message) => {
+        updatedMessages = this.state.messages.filter((message) => {
           return (!message.selected)
         })
-        this.setState({...this.state, messages: newMessages, selected: selectedType(newMessages)})
         break
       }
       default: {
         break
       }
     }
+    this.setState({...this.state, messages: updatedMessages})
   }
 
   render() {
