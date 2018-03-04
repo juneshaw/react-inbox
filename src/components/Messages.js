@@ -17,10 +17,10 @@ class Messages extends React.Component {
 
   handleMessageChange = (request) => {
     let updatedMessages = [...this.state.messages]
-    let messageIndex = this.findMessage(request.target.dataset.id)
+    let messageIndex = this.findMessage(request.currentTarget.dataset.id)
     if (messageIndex > -1) {
       let message = updatedMessages[messageIndex]
-      switch (request.target.id) {
+      switch (request.currentTarget.id) {
         case 'star': {
           message.starred = !message.starred
           break
@@ -41,37 +41,41 @@ class Messages extends React.Component {
 
   handleToolbarChange = (request) => {
     let updatedMessages
-    switch (request.target.id) {
+    switch (request.currentTarget.id) {
       case "select_messages": {
         updatedMessages = this.state.messages.map((message) =>
           (selectedType(this.state.messages) === SELECTTYPE.NONE ||
           selectedType(this.state.messages) === SELECTTYPE.SOME) ?
           {...message, selected: true} :
           {...message, selected: false})
+        this.setState({...this.state, messages: updatedMessages})
         break
       }
       case "mark_as_read": {
         updatedMessages = this.state.messages.map((message) =>
            message.selected  ? {...message, read: true} : message)
+        this.setState({...this.state, messages: updatedMessages})
         break
       }
       case "mark_as_unread": {
         updatedMessages = this.state.messages.map((message) =>
            message.selected  ? {...message, read: false} : message)
+        this.setState({...this.state, messages: updatedMessages})
         break
       }
       case "apply_label": {
-        let newLabel = request.target.value
+        let newLabel = request.currentTarget.value
         updatedMessages = this.state.messages.map((message) => {
           if (message.selected && message.labels.findIndex((label) => (label.text === newLabel)) < 0) {
             message.labels.push({text:newLabel})
           }
           return {...message, labels: message.labels}
         })
+        this.setState({...this.state, messages: updatedMessages})
         break
       }
       case "remove_label": {
-        let newLabel = request.target.value
+        let newLabel = request.currentTarget.value
         updatedMessages = this.state.messages.map((message) => {
           if (message.selected) {
             let index = message.labels.findIndex((label) => (label.text === newLabel))
@@ -81,19 +85,22 @@ class Messages extends React.Component {
           }
           return {...message, labels: message.labels}
         })
+        this.setState({...this.state, messages: updatedMessages})
         break
       }
       case "delete": {
         updatedMessages = this.state.messages.filter((message) => {
           return (!message.selected)
         })
+        this.setState({...this.state, messages: updatedMessages})
         break
       }
       default: {
+        // updatedMessages = this.state.messages
         break
       }
     }
-    this.setState({...this.state, messages: updatedMessages})
+    // this.setState({...this.state, messages: updatedMessages})
   }
 
   render() {

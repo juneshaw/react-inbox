@@ -7,7 +7,7 @@ const SELECTTYPE = Enum("NONE", "SOME", "ALL")
 const selectedType = (messages) => {
   let selectedType
   let selectedMessages = messages.filter((message) => {return message.selected})
-  if (selectedMessages.length === 0) {
+  if (selectedMessages.length === 0 || messages.length === 0) {
     selectedType = SELECTTYPE.NONE }
   else if (selectedMessages.length === messages.length) {
     selectedType = SELECTTYPE.ALL
@@ -65,12 +65,10 @@ const Toolbar = ({messages, toolbarHandler}) => {
 
         <button
           className="btn btn-default"
-          disabled={selectedType(messages) === SELECTTYPE.NONE}>
-          <i
-            id="select_messages"
-            className={selectedStyle()}
-            onClick={toolbarHandler}>
-          </i>
+          disabled={messages.length === 0}
+          id="select_messages"
+          onClick={toolbarHandler}>
+          <i className={selectedStyle()}> </i>
         </button>
 
         <button
@@ -114,11 +112,10 @@ const Toolbar = ({messages, toolbarHandler}) => {
 
         <button
           className="btn btn-default"
-          disabled={selectedType(messages) === SELECTTYPE.NONE}>
-          <i
-            className="fa fa-trash-o"
-            id="delete"
-            onClick={toolbarHandler} ></i>
+          id="delete"
+          disabled={selectedType(messages) === SELECTTYPE.NONE}
+          onClick={toolbarHandler} >
+          <i className="fa fa-trash-o"></i>
         </button>
       </div>
     </div>
