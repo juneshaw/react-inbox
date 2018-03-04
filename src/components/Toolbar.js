@@ -1,15 +1,16 @@
 import React from 'react'
-import Enum from "es6-enum"
+import Enum from 'es6-enum'
+import Pluralize from 'pluralize'
 
 const SELECTTYPE = Enum("NONE", "SOME", "ALL")
 
 const selectedType = (messages) => {
   let selectedType
   let selectedMessages = messages.filter((message) => {return message.selected})
-  if (selectedMessages.length === messages.length) {
+  if (selectedMessages.length === 0) {
+    selectedType = SELECTTYPE.NONE }
+  else if (selectedMessages.length === messages.length) {
     selectedType = SELECTTYPE.ALL
-  } else if (selectedMessages.length === 0) {
-    selectedType = SELECTTYPE.NONE
   } else {
     selectedType = SELECTTYPE.SOME
   }
@@ -58,17 +59,13 @@ const Toolbar = ({messages, toolbarHandler}) => {
         className="col-md-12">
         <p className="pull-right">
           <span className="badge badge">
-            {messages.filter((message) => {return !message.read}).length}
+            {messages.filter((message) => {return !message.read}).length}  {Pluralize('unread message', messages.filter((message) => {return !message.read}).length)}
           </span>
-          unread messages
         </p>
 
-        <a className="btn btn-danger">
-          <i className="fa fa-plus"></i>
-        </a>
-
         <button
-          className="btn btn-default">
+          className="btn btn-default"
+          disabled={selectedType(messages) === SELECTTYPE.NONE}>
           <i
             id="select_messages"
             className={selectedStyle()}
@@ -116,11 +113,11 @@ const Toolbar = ({messages, toolbarHandler}) => {
         </select>
 
         <button
-          className="btn btn-default">
+          className="btn btn-default"
+          disabled={selectedType(messages) === SELECTTYPE.NONE}>
           <i
             className="fa fa-trash-o"
             id="delete"
-            disabled={selectedType(messages) === SELECTTYPE.NONE}
             onClick={toolbarHandler} ></i>
         </button>
       </div>
