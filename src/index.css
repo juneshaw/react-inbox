@@ -10,6 +10,7 @@ body {
   padding-bottom: 8px;
   cursor: pointer;
   border-bottom: 1px solid #efefef;
+  text-align: left
 }
 
 .message a {
