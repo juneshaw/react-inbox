@@ -7,10 +7,16 @@ import Message from './Message'
 class Messages extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      messages: props.messages
-    }
+      messages: props.messages};
+  }
+
+  async componentDidMount() {
+    // const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
+    const response = await fetch('/api/messages')
+    const json = await response.json()
+    this.setState(...this.state, {messages: json._embedded.messages})
   }
 
   findMessage = (id) => this.state.messages.findIndex((message) => (message.id === parseInt(id, 10)))
@@ -66,8 +72,8 @@ class Messages extends React.Component {
       case "apply_label": {
         let newLabel = request.currentTarget.value
         updatedMessages = this.state.messages.map((message) => {
-          if (message.selected && message.labels.findIndex((label) => (label.text === newLabel)) < 0) {
-            message.labels.push({text:newLabel})
+          if (message.selected && message.labels.findIndex((label) => (label === newLabel)) < 0) {
+            message.labels.push(newLabel)
           }
           return {...message, labels: message.labels}
         })
@@ -78,7 +84,7 @@ class Messages extends React.Component {
         let newLabel = request.currentTarget.value
         updatedMessages = this.state.messages.map((message) => {
           if (message.selected) {
-            let index = message.labels.findIndex((label) => (label.text === newLabel))
+            let index = message.labels.findIndex((label) => (label === newLabel))
             if (index >= 0) {
               message.labels.splice(index, 1)
             }

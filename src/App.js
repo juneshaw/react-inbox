@@ -12,28 +12,13 @@ import Messages from './components/Messages'
 
 class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      messages: []};
-  }
-
-  async componentDidMount() {
-    // const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
-    const response = await fetch('/api/messages')
-    const json = await response.json()
-    const messagesResponse = await fetch(json.links.messages.href)
-    const messages = await messagesResponse.json()
-    this.setState({...this.state, messages})
-  }
-
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">React Inbox</h1>
         </header>
-        <Messages messages={this.state.messages}/>
+        <Messages messages={[]}/>
       </div>
     );
   }

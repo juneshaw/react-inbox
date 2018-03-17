@@ -22,13 +22,13 @@ const Message = ({message, messagesHandler}) => {
             <span
               key={i}
               className="label label-warning"
-              data-label={label.text}>
-              {label.text}
+              data-label={label}>
+              {label}
             </span>
           )
         })}
         <a href="#">
-          {message.text}
+          {message.subject}
         </a>
       </div>
     </div>
