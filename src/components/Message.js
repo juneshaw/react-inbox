@@ -27,9 +27,9 @@ const Message = ({message, messagesHandler}) => {
             </span>
           )
         })}
-        <a href="#">
+        <span id='read' data-id={message.id} onClick={messagesHandler}>
           {message.subject}
-        </a>
+        </span>
       </div>
     </div>
   )

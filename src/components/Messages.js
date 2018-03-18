@@ -21,14 +21,26 @@ class Messages extends React.Component {
 
   findMessage = (id) => this.state.messages.findIndex((message) => (message.id === parseInt(id, 10)))
 
+  async postMessage (messageId, postObject) {
+    const response = await fetch('/api/messages', {
+        method: 'PATCH',
+        body: JSON.stringify(postObject),
+        headers: {
+            'Content-Type': 'application/json'
+        }})
+    const json = await response
+  }
+
   handleMessageChange = (request) => {
     let updatedMessages = [...this.state.messages]
     let messageIndex = this.findMessage(request.currentTarget.dataset.id)
     if (messageIndex > -1) {
       let message = updatedMessages[messageIndex]
+      let command = request.currentTarget.id
       switch (request.currentTarget.id) {
         case 'star': {
           message.starred = !message.starred
+          this.postMessage(message.id, {command,  "messageIds": [message.id], "star": message.starred})
           break
         }
         case 'select': {
@@ -36,7 +48,10 @@ class Messages extends React.Component {
           break
         }
         case 'read': {
-          message.read = true
+          if (!message.read) {
+            message.read = true
+            this.postMessage(message.id, {command,  "messageIds": [message.id], "read": message.read})
+          }
           break
         }
         default: break
