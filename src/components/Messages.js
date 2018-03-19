@@ -21,14 +21,14 @@ class Messages extends React.Component {
 
   findMessage = (id) => this.state.messages.findIndex((message) => (message.id === parseInt(id, 10)))
 
-  async postMessage (messageId, postObject) {
+
+  async postMessage (requestBody) {
     const response = await fetch('/api/messages', {
         method: 'PATCH',
-        body: JSON.stringify(postObject),
+        body: JSON.stringify(requestBody),
         headers: {
             'Content-Type': 'application/json'
         }})
-    const json = await response
   }
 
   handleMessageChange = (request) => {
@@ -40,7 +40,7 @@ class Messages extends React.Component {
       switch (request.currentTarget.id) {
         case 'star': {
           message.starred = !message.starred
-          this.postMessage(message.id, {command,  "messageIds": [message.id], "star": message.starred})
+          this.postMessage({command,  "messageIds": [message.id], "star": message.starred})
           break
         }
         case 'select': {
@@ -50,7 +50,7 @@ class Messages extends React.Component {
         case 'read': {
           if (!message.read) {
             message.read = true
-            this.postMessage(message.id, {command,  "messageIds": [message.id], "read": message.read})
+            this.postMessage({command,  "messageIds": [message.id], "read": message.read})
           }
           break
         }
@@ -60,28 +60,32 @@ class Messages extends React.Component {
     }
   }
 
+  selectedMessageIds = (messages) => messages.filter = (message) => message.selected
+
   handleToolbarChange = (request) => {
     let updatedMessages
-    switch (request.currentTarget.id) {
+    let updateState = true
+    let messageIds = this.state.messages.filter((message) => message.selected).map((message) => message.id)
+    const command = request.currentTarget.id
+    switch (command) {
       case "select_messages": {
         updatedMessages = this.state.messages.map((message) =>
           (selectedType(this.state.messages) === SELECTTYPE.NONE ||
           selectedType(this.state.messages) === SELECTTYPE.SOME) ?
           {...message, selected: true} :
           {...message, selected: false})
-        this.setState({...this.state, messages: updatedMessages})
         break
       }
       case "mark_as_read": {
         updatedMessages = this.state.messages.map((message) =>
            message.selected  ? {...message, read: true} : message)
-        this.setState({...this.state, messages: updatedMessages})
+        this.postMessage({command: "read",  messageIds, "read": true})
         break
       }
       case "mark_as_unread": {
         updatedMessages = this.state.messages.map((message) =>
            message.selected  ? {...message, read: false} : message)
-        this.setState({...this.state, messages: updatedMessages})
+        this.postMessage({command: "read",  messageIds, "read": false})
         break
       }
       case "apply_label": {
@@ -92,7 +96,7 @@ class Messages extends React.Component {
           }
           return {...message, labels: message.labels}
         })
-        this.setState({...this.state, messages: updatedMessages})
+        this.postMessage({command: "addLabel", messageIds, "label": newLabel})
         break
       }
       case "remove_label": {
@@ -106,22 +110,25 @@ class Messages extends React.Component {
           }
           return {...message, labels: message.labels}
         })
-        this.setState({...this.state, messages: updatedMessages})
+        this.postMessage({command: "removeLabel", messageIds, "label": newLabel})
         break
       }
       case "delete": {
         updatedMessages = this.state.messages.filter((message) => {
           return (!message.selected)
         })
-        this.setState({...this.state, messages: updatedMessages})
+        this.postMessage({command: "delete", messageIds})
         break
       }
       default: {
-        // updatedMessages = this.state.messages
+        updateState = false
         break
       }
     }
-    // this.setState({...this.state, messages: updatedMessages})
+    if (updateState) {
+      this.setState({...this.state, messages: updatedMessages})
+    }
+
   }
 
   render() {
