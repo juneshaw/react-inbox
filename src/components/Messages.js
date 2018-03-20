@@ -24,9 +24,19 @@ class Messages extends React.Component {
   findMessage = (id) => this.state.messages.findIndex((message) => (message.id === parseInt(id, 10)))
 
 
-  async postMessage (requestBody) {
+  async patchMessage (requestBody) {
     const response = await fetch('/api/messages', {
         method: 'PATCH',
+        body: JSON.stringify(requestBody),
+        headers: {
+            'Content-Type': 'application/json'
+        }})
+    console.log('response: ', response)
+  }
+
+  async postMessage (requestBody) {
+    const response = await fetch('/api/messages', {
+        method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {
             'Content-Type': 'application/json'
@@ -43,7 +53,7 @@ class Messages extends React.Component {
       switch (request.currentTarget.id) {
         case 'star': {
           message.starred = !message.starred
-          this.postMessage({command,  "messageIds": [message.id], "star": message.starred})
+          this.patchMessage({command,  "messageIds": [message.id], "star": message.starred})
           break
         }
         case 'select': {
@@ -53,7 +63,7 @@ class Messages extends React.Component {
         case 'read': {
           if (!message.read) {
             message.read = true
-            this.postMessage({command,  "messageIds": [message.id], "read": message.read})
+            this.patchMessage({command,  "messageIds": [message.id], "read": message.read})
           }
           break
         }
@@ -69,9 +79,18 @@ class Messages extends React.Component {
     this.setState({...this.state, "composeOpen": !this.state.composeOpen})
   }
 
-  handleCompose = () => {
+  buildRequest = (target) => ({body: {subject: target.subject.value, body: target.body.value}})
+
+  resetForm = () => {
+    document.getElementById('subject').value=""
+    document.getElementById('body').value=""
+  }
+
+  handleCompose = (event) => {
     alert('in handleCompose')
-    // post the message
+    event.preventDefault()
+    const request = this.buildRequest(event.target)
+    this.postMessage(request)
     this.setState({...this.state, "composeOpen": false})
 
   }
@@ -93,13 +112,13 @@ class Messages extends React.Component {
       case "mark_as_read": {
         updatedMessages = this.state.messages.map((message) =>
            message.selected  ? {...message, read: true} : message)
-        this.postMessage({command: "read",  messageIds, "read": true})
+        this.patchMessage({command: "read",  messageIds, "read": true})
         break
       }
       case "mark_as_unread": {
         updatedMessages = this.state.messages.map((message) =>
            message.selected  ? {...message, read: false} : message)
-        this.postMessage({command: "read",  messageIds, "read": false})
+        this.patchMessage({command: "read",  messageIds, "read": false})
         break
       }
       case "apply_label": {
@@ -110,7 +129,7 @@ class Messages extends React.Component {
           }
           return {...message, labels: message.labels}
         })
-        this.postMessage({command: "addLabel", messageIds, "label": newLabel})
+        this.patchMessage({command: "addLabel", messageIds, "label": newLabel})
         break
       }
       case "remove_label": {
@@ -124,14 +143,14 @@ class Messages extends React.Component {
           }
           return {...message, labels: message.labels}
         })
-        this.postMessage({command: "removeLabel", messageIds, "label": newLabel})
+        this.patchMessage({command: "removeLabel", messageIds, "label": newLabel})
         break
       }
       case "delete": {
         updatedMessages = this.state.messages.filter((message) => {
           return (!message.selected)
         })
-        this.postMessage({command: "delete", messageIds})
+        this.patchMessage({command: "delete", messageIds})
         break
       }
       default: {
