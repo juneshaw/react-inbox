@@ -71,6 +71,9 @@ class Messages extends React.Component {
 
   handleCompose = () => {
     alert('in handleCompose')
+    // post the message
+    this.setState({...this.state, "composeOpen": false})
+
   }
 
   handleToolbarChange = (request) => {
