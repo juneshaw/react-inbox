@@ -79,3 +79,7 @@ footer.spacer {
 .fa-close {
   cursor: pointer;
 }
+
+.hidden {
+  display: none;
+}

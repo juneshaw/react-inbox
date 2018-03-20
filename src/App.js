@@ -17,7 +17,10 @@ class App extends React.Component {
         <header className="App-header">
           <h1 className="App-title">React Inbox</h1>
         </header>
-        <Messages messages={[]}/>
+        <Messages
+          messages={[]}
+          composeOpen={false}
+        />
       </div>
     );
   }

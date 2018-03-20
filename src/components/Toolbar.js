@@ -17,7 +17,7 @@ const selectedType = (messages) => {
   return selectedType
 }
 
-const Toolbar = ({messages, toolbarHandler}) => {
+const Toolbar = ({messages, toolbarHandler, openComposeHandler}) => {
 
   const labels = [
     {text: 'dev'}, {text: 'personal'}, {text: 'gschool'}
@@ -62,6 +62,12 @@ const Toolbar = ({messages, toolbarHandler}) => {
             {messages.filter((message) => {return !message.read}).length}  {Pluralize('unread message', messages.filter((message) => {return !message.read}).length)}
           </span>
         </p>
+
+        <a className="btn btn-danger"
+          id="compose_message"
+          onClick={openComposeHandler}>
+          <i className="fa fa-plus"></i>
+        </a>
 
         <button
           className="btn btn-default"

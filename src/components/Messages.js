@@ -3,13 +3,15 @@ import Toolbar from './Toolbar'
 import { SELECTTYPE } from './Toolbar'
 import { selectedType } from './Toolbar'
 import Message from './Message'
+import ComposeForm from './ComposeForm'
 
 class Messages extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      messages: props.messages};
+      messages: props.messages,
+      composeOpen: props.composeOpen};
   }
 
   async componentDidMount() {
@@ -29,6 +31,7 @@ class Messages extends React.Component {
         headers: {
             'Content-Type': 'application/json'
         }})
+    console.log('response: ', response)
   }
 
   handleMessageChange = (request) => {
@@ -61,6 +64,14 @@ class Messages extends React.Component {
   }
 
   selectedMessageIds = (messages) => messages.filter = (message) => message.selected
+
+  handleOpenCompose = () => {
+    this.setState({...this.state, "composeOpen": !this.state.composeOpen})
+  }
+
+  handleCompose = () => {
+    alert('in handleCompose')
+  }
 
   handleToolbarChange = (request) => {
     let updatedMessages
@@ -137,6 +148,11 @@ class Messages extends React.Component {
         <Toolbar
           messages={this.state.messages}
           toolbarHandler={this.handleToolbarChange}
+          openComposeHandler={this.handleOpenCompose}
+        />
+        <ComposeForm
+          composeHandler={this.handleCompose}
+          composeOpen={this.state.composeOpen}
         />
         {this.state.messages.map((message, i) => {
           return (
