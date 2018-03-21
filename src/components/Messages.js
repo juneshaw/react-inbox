@@ -15,8 +15,8 @@ class Messages extends React.Component {
   }
 
   async componentDidMount() {
-    // const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
-    const response = await fetch('/api/messages')
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
+    // const response = await fetch('/api/messages')
     const json = await response.json()
     this.setState(...this.state, {messages: json._embedded.messages})
   }
