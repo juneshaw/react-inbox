@@ -25,23 +25,33 @@ class Messages extends React.Component {
 
 
   async patchMessage (requestBody) {
-    const response = await fetch('/api/messages', {
+    // const response = await fetch('/api/messages', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
         method: 'PATCH',
         body: JSON.stringify(requestBody),
         headers: {
             'Content-Type': 'application/json'
         }})
-    console.log('response: ', response)
   }
 
   async postMessage (requestBody) {
-    const response = await fetch('/api/messages', {
+    // const response = await fetch('/api/messages', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
         method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {
             'Content-Type': 'application/json'
         }})
-    console.log('response: ', response)
+    const json = await response.json()
+    const message = {
+      id: json.id,
+      subject: json.subject,
+      body: json.body,
+      read: json.read,
+      starred: json.starred,
+      labels: json.labels
+    }
+    this.setState({...this.state, messages:[...this.state.messages, message]})
   }
 
   handleMessageChange = (request) => {
@@ -79,20 +89,19 @@ class Messages extends React.Component {
     this.setState({...this.state, "composeOpen": !this.state.composeOpen})
   }
 
-  buildRequest = (target) => ({body: {subject: target.subject.value, body: target.body.value}})
+  buildRequest = (target) => ({subject: target.subject.value, body: target.body.value})
 
-  resetForm = () => {
+  resetComposeForm = () => {
     document.getElementById('subject').value=""
     document.getElementById('body').value=""
   }
 
   handleCompose = (event) => {
-    alert('in handleCompose')
     event.preventDefault()
     const request = this.buildRequest(event.target)
     this.postMessage(request)
+    this.resetComposeForm()
     this.setState({...this.state, "composeOpen": false})
-
   }
 
   handleToolbarChange = (request) => {
