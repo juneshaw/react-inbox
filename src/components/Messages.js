@@ -7,15 +7,6 @@ const Messages = ({messages, composeOpen, handleToolBarChange, handleMessageChan
 
   return (
     <div className="container">
-      <Toolbar
-        messages={messages}
-        toolbarHandler={handleToolBarChange}
-        openComposeHandler={handleOpenCompose}
-      />
-      <ComposeForm
-        composeHandler={handleCompose}
-        composeOpen={composeOpen}
-      />
       {messages.map((message, i) => {
         return (
           <Message
@@ -27,7 +18,6 @@ const Messages = ({messages, composeOpen, handleToolBarChange, handleMessageChan
     </div>
   )
 }
-
 
 const mapStateToProps = state => {
   state: {
