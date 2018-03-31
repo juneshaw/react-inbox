@@ -28,4 +28,5 @@ const Messages = ({messages, composeOpen, handleToolBarChange, handleMessageChan
   )
 }
 
+
 export default Messages
