@@ -182,9 +182,19 @@ class App extends React.Component {
         <header className="App-header">
           <h1 className="App-title">React Inbox</h1>
         </header>
+        <Toolbar
+          messages={this.state.messages}
+          openComposeHandler={this.handleOpenCompose.bind(this)}
+          openComposeHandler={this.handleOpenCompose.bind(this)}
+          toolbarHandler={this.handleToolbarChange.bind(this)}
+        />
+        <ComposeForm
+          composeHandler={this.handleCompose.bind(this)}
+          composeOpen={this.state.composeOpen}
+        />
         <Messages
           messages={this.state.messages}
-          handleMessageChange={this.handleMessageChange}
+          handleMessageChange={this.handleMessageChange.bind(this)}
         />
       </div>
     );
