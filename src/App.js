@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import './App.css';
 import Messages from './components/Messages'
 import { SELECTTYPE } from './components/Toolbar'
 import { selectedType } from './components/Toolbar'
+import { getMessages } from './actions/getMessages'
 
 class App extends React.Component {
 
@@ -14,11 +17,12 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
-    // const response = await fetch('/api/messages')
-    const json = await response.json()
-    this.setState(...this.state, {messages: json._embedded.messages})
+    this.props.getMessages();
   }
+    // const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
+    // // const response = await fetch('/api/messages')
+    // const json = await response.json()
+    // this.setState(...this.state, {messages: json._embedded.messages})
 
   findMessage = (id) => this.state.messages.findIndex((message) => (message.id === parseInt(id, 10)))
 
@@ -191,4 +195,18 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  state: {
+    messages: state.messages
+    labels: state.labels
+  }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  getMessages
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
