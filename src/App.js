@@ -184,11 +184,7 @@ class App extends React.Component {
         </header>
         <Messages
           messages={this.state.messages}
-          composeOpen={this.state.composeOpen}
-          handleToolBarChange={this.handleToolbarChange}
           handleMessageChange={this.handleMessageChange}
-          handleOpenCompose={this.handleOpenCompose}
-          handleCompose={this.handleCompose}
         />
       </div>
     );

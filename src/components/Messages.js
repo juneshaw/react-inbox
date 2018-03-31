@@ -29,4 +29,14 @@ const Messages = ({messages, composeOpen, handleToolBarChange, handleMessageChan
 }
 
 
-export default Messages
+const mapStateToProps = state => {
+  state: {
+    messages: state.messages
+    labels: state.labels
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Messages)

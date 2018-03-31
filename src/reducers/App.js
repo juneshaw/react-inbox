@@ -1,6 +1,6 @@
-import MESSAGES_RECEIVED_SUCCESS from '../actions/getMessages'
+import { MESSAGES_RECEIVED_SUCCESS } from '../actions/getMessages'
 
-initialState = {
+const initialState = {
   messages: [],
   labels: [],
   composeOpen: false
