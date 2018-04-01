@@ -8,6 +8,7 @@ import Toolbar from './components/Toolbar'
 import { SELECTTYPE } from './components/Toolbar'
 import { selectedType } from './components/Toolbar'
 import { getMessages } from './actions/getMessages'
+import { addMessage } from './actions/addMessage'
 
 class App extends React.Component {
 
@@ -21,10 +22,6 @@ class App extends React.Component {
   async componentDidMount() {
     this.props.getMessages();
   }
-    // const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
-    // // const response = await fetch('/api/messages')
-    // const json = await response.json()
-    // this.setState(...this.state, {messages: json._embedded.messages})
 
   findMessage = (id) => this.state.messages.findIndex((message) => (message.id === parseInt(id, 10)))
 
@@ -37,26 +34,6 @@ class App extends React.Component {
         headers: {
             'Content-Type': 'application/json'
         }})
-  }
-
-  async postMessage (requestBody) {
-    // const response = await fetch('/api/messages', {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-            'Content-Type': 'application/json'
-        }})
-    const json = await response.json()
-    const message = {
-      id: json.id,
-      subject: json.subject,
-      body: json.body,
-      read: json.read,
-      starred: json.starred,
-      labels: json.labels
-    }
-    this.setState({...this.state, messages:[...this.state.messages, message]})
   }
 
   handleMessageChange = (request) => {
@@ -104,7 +81,7 @@ class App extends React.Component {
   handleCompose = (event) => {
     event.preventDefault()
     const request = this.buildRequest(event.target)
-    this.postMessage(request)
+    this.props.addMessage(request)
     this.resetComposeForm()
     this.setState({...this.state, "composeOpen": false})
   }
@@ -205,6 +182,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+  addMessage,
   getMessages
 }, dispatch)
 
