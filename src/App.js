@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import './App.css';
 import Messages from './components/Messages'
+import ComposeForm from './components/ComposeForm'
+import Toolbar from './components/Toolbar'
 import { SELECTTYPE } from './components/Toolbar'
 import { selectedType } from './components/Toolbar'
 import { getMessages } from './actions/getMessages'
@@ -183,8 +185,6 @@ class App extends React.Component {
           <h1 className="App-title">React Inbox</h1>
         </header>
         <Toolbar
-          messages={this.state.messages}
-          openComposeHandler={this.handleOpenCompose.bind(this)}
           openComposeHandler={this.handleOpenCompose.bind(this)}
           toolbarHandler={this.handleToolbarChange.bind(this)}
         />
@@ -193,7 +193,6 @@ class App extends React.Component {
           composeOpen={this.state.composeOpen}
         />
         <Messages
-          messages={this.state.messages}
           handleMessageChange={this.handleMessageChange.bind(this)}
         />
       </div>
@@ -201,12 +200,9 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  state: {
-    messages: state.messages
-    labels: state.labels
-  }
-}
+const mapStateToProps = state => ({
+  messages: state.messages
+})
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   getMessages

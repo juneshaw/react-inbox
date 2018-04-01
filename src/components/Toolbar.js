@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Enum from 'es6-enum'
 import Pluralize from 'pluralize'
 
@@ -130,4 +131,11 @@ const Toolbar = ({messages, toolbarHandler, openComposeHandler}) => {
 
 export { selectedType }
 export { SELECTTYPE }
-export default Toolbar
+
+const mapStateToProps = state => ({
+  messages: state.App.messages
+})
+
+export default connect(
+  mapStateToProps
+)(Toolbar)

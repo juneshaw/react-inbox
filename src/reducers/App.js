@@ -2,7 +2,6 @@ import { MESSAGES_RECEIVED_SUCCESS } from '../actions/getMessages'
 
 const initialState = {
   messages: [],
-  labels: [],
   composeOpen: false
 }
 

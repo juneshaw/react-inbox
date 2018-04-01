@@ -1,9 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Toolbar from './Toolbar'
 import Message from './Message'
 import ComposeForm from './ComposeForm'
 
-const Messages = ({messages, composeOpen, handleToolBarChange, handleMessageChange, handleOpenCompose, handleCompose}) => {
+const Messages = ({messages, handleMessageChange}) => {
 
   return (
     <div className="container">
@@ -19,14 +20,10 @@ const Messages = ({messages, composeOpen, handleToolBarChange, handleMessageChan
   )
 }
 
-const mapStateToProps = state => {
-  state: {
-    messages: state.messages
-    labels: state.labels
-  }
-}
+const mapStateToProps = state => ({
+  messages: state.App.messages
+})
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(Messages)
