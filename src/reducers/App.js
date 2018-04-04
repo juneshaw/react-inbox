@@ -46,7 +46,7 @@ export default (state = initialState, action) => {
           })
           break
         }
-        case "apply_label": {
+        case "addLabel": {
           messages = selectedMessages.map((message) => {
             const newLabels = [...message.labels, action.message.label]
             message.labels = Array.from(new Set(newLabels))
@@ -54,7 +54,7 @@ export default (state = initialState, action) => {
           })
           break
         }
-        case "remove_label": {
+        case "removeLabel": {
           messages = selectedMessages.map((message) => {
             const index = message.labels.findIndex((label) => (label === action.message.label))
             if (index >= 0) {
@@ -84,7 +84,7 @@ export default (state = initialState, action) => {
       })
       return {
         ...state,
-        "messages": updatedMessages
+        "messages": [...updatedMessages]
       }
     }
     default:

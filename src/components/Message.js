@@ -106,12 +106,16 @@ const Message = ({message, updateMessage, selectMessage}) => {
   )
 }
 
+const mapStateToProps = state => ({
+  messages: state.App.messages
+})
+
 const mapDispatchToProps = dispatch => bindActionCreators({
   selectMessage,
   updateMessage
 }, dispatch)
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Message)

@@ -81,7 +81,7 @@ const Toolbar = ({messages, selectMessage, updateMessage, openComposeHandler}) =
       }
       case "apply_label": {
         let newLabel = request.currentTarget.value
-        updatedMessages = this.state.messages.map((message) => {
+        updatedMessages = messages.map((message) => {
           if (message.selected && message.labels.findIndex((label) => (label === newLabel)) < 0) {
             message.labels.push(newLabel)
           }
@@ -96,7 +96,7 @@ const Toolbar = ({messages, selectMessage, updateMessage, openComposeHandler}) =
       }
       case "remove_label": {
         let newLabel = request.currentTarget.value
-        updatedMessages = this.state.messages.map((message) => {
+        updatedMessages = messages.map((message) => {
           if (message.selected) {
             let index = message.labels.findIndex((label) => (label === newLabel))
             if (index >= 0) {
@@ -113,7 +113,7 @@ const Toolbar = ({messages, selectMessage, updateMessage, openComposeHandler}) =
         break
       }
       case "delete": {
-        updatedMessages = this.state.messages.filter((message) => {
+        updatedMessages = messages.filter((message) => {
           return (!message.selected)
         })
         updateMessage(
