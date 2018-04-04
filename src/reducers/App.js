@@ -29,7 +29,7 @@ export default (state = initialState, action) => {
     case MESSAGES_RECEIVED_SUCCESS:
       return {...state, messages: action.messages}
     case MESSAGE_ADDED_SUCCESS:
-      return {...state, messages: [...state.messages, action.messages]}
+      return {...state, messages: [...state.messages, action.message]}
     case SELECT_MESSAGE_SUCCESS: {
       selectedMessages = state.messages.filter((message) =>
         {return (action.message.messageIds.indexOf(message.id) !== -1)})
