@@ -23,10 +23,13 @@ const Message = ({message, updateMessage, selectMessage}) => {
           "selected": !JSON.parse(evt.currentTarget.dataset.selected)})
         break
       }
-      // case 'read' : {
-      //   readMessageToggle(evt.currentTarget.dataset.message)
-      //   break
-      // }
+      case 'read' : {
+        updateMessage({
+          "command": evt.currentTarget.id,
+          "messageIds": [parseInt(evt.currentTarget.dataset.id,  10)],
+          "read": true})
+        break
+      }
       default: break
     }
   }
