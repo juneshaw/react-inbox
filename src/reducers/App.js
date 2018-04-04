@@ -9,19 +9,36 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
-  let messageIndex
+  let messageIndex, messages, updatedMessages, selectedMessages
   switch (action.type) {
     case MESSAGES_RECEIVED_SUCCESS:
       return {...state, messages: action.messages}
     case MESSAGE_ADDED_SUCCESS:
       return {...state, messages: [...state.messages, action.messages]}
-    case SELECT_MESSAGE_SUCCESS:
-      const selectedMessages = state.messages.filter((message) =>
-        {return (action.message.messageIds.indexOf(message.id) !== -1)})      
+    case SELECT_MESSAGE_SUCCESS: {
+      selectedMessages = state.messages.filter((message) =>
+        {return (action.message.messageIds.indexOf(message.id) !== -1)})
+      messages = selectedMessages.map((message) => {
+        return {...message, selected: action.message.selected}
+      })
+      updatedMessages = state.messages.map((stateMessage) =>  {
+        messageIndex = messages.findIndex((message) => {
+          return stateMessage.id === message.id
+        })
+        if (messageIndex >= 0) {
+          return messages[messageIndex]
+        } else {
+          return stateMessage
+        }
+      })
+      return {
+        ...state,
+        messages: [...updatedMessages]
+      }
+    }
     case UPDATE_MESSAGE_SUCCESS: {
-      const selectedMessages = state.messages.filter((message) => {
+      selectedMessages = state.messages.filter((message) => {
         return (action.message.messageIds.indexOf(message.id) !== -1)})
-      let messages
       switch (action.message.command) {
         case "star": {
           messages = selectedMessages.map((message) => {
@@ -56,7 +73,7 @@ export default (state = initialState, action) => {
         }
         default: break
       }
-      const updatedMessages = state.messages.map((stateMessage) =>  {
+      updatedMessages = state.messages.map((stateMessage) =>  {
         messageIndex = messages.findIndex((message) => {
           return stateMessage.id === message.id
         })
@@ -64,7 +81,8 @@ export default (state = initialState, action) => {
           return messages[messageIndex]
         } else {
           return stateMessage
-        }})
+        }
+      })
       return {
         ...state,
         messages: [...updatedMessages]

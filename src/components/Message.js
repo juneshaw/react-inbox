@@ -6,7 +6,7 @@ import { selectMessage } from '../actions/selectMessage'
 
 
 
-const Message = ({message, updateMessage}) => {
+const Message = ({message, updateMessage, selectMessage}) => {
 
   const messagesHandler = (evt) => {
     switch (evt.currentTarget.id) {
@@ -14,13 +14,13 @@ const Message = ({message, updateMessage}) => {
         updateMessage({
           "command": evt.currentTarget.id,
           "messageIds": [parseInt(evt.currentTarget.dataset.id,  10)],
-          "star": !(JSON.parse(evt.currentTarget.dataset.starred))})
+          "star": !JSON.parse(evt.currentTarget.dataset.starred)})
         break
       }
       case 'select' : {
         selectMessage({
           "messageIds": [parseInt(evt.currentTarget.dataset.id,  10)],
-          "selected": evt.currentTarget.dataset.selected})
+          "selected": !JSON.parse(evt.currentTarget.dataset.selected)})
         break
       }
       // case 'read' : {
@@ -71,7 +71,8 @@ const Message = ({message, updateMessage}) => {
               type="checkbox"
               id='select'
               data-id={message.id}
-              checked={message.selected} onChange={messagesHandler}/>
+              checked={message.selected}
+              data-selected={message.selected} onChange={messagesHandler}/>
           </div>
           <div className="col-xs-2">
             <i
@@ -94,7 +95,10 @@ const Message = ({message, updateMessage}) => {
             </span>
           )
         })}
-        <span id='read' data-id={message.id} onClick={messagesHandler}>
+        <span
+          id='read'
+          data-id={message.id}
+          onClick={messagesHandler}>
           {message.subject}
         </span>
       </div>
@@ -103,6 +107,7 @@ const Message = ({message, updateMessage}) => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+  selectMessage,
   updateMessage
 }, dispatch)
 
