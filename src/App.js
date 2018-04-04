@@ -56,75 +56,6 @@ class App extends React.Component {
     this.setState({...this.state, "composeOpen": false})
   }
 
-  handleToolbarChange = (request) => {
-    let updatedMessages
-    let updateState = true
-    let messageIds = this.state.messages.filter((message) => message.selected).map((message) => message.id)
-    const command = request.currentTarget.id
-    switch (command) {
-      case "select_messages": {
-        updatedMessages = this.state.messages.map((message) =>
-          (selectedType(this.state.messages) === SELECTTYPE.NONE ||
-          selectedType(this.state.messages) === SELECTTYPE.SOME) ?
-          {...message, selected: true} :
-          {...message, selected: false})
-        break
-      }
-      case "mark_as_read": {
-        updatedMessages = this.state.messages.map((message) =>
-           message.selected  ? {...message, read: true} : message)
-        this.updateMessage({command: "read",  messageIds, "read": true})
-        break
-      }
-      case "mark_as_unread": {
-        updatedMessages = this.state.messages.map((message) =>
-           message.selected  ? {...message, read: false} : message)
-        this.updateMessage({command: "read",  messageIds, "read": false})
-        break
-      }
-      case "apply_label": {
-        let newLabel = request.currentTarget.value
-        updatedMessages = this.state.messages.map((message) => {
-          if (message.selected && message.labels.findIndex((label) => (label === newLabel)) < 0) {
-            message.labels.push(newLabel)
-          }
-          return {...message, labels: message.labels}
-        })
-        this.updateMessage({command: "addLabel", messageIds, "label": newLabel})
-        break
-      }
-      case "remove_label": {
-        let newLabel = request.currentTarget.value
-        updatedMessages = this.state.messages.map((message) => {
-          if (message.selected) {
-            let index = message.labels.findIndex((label) => (label === newLabel))
-            if (index >= 0) {
-              message.labels.splice(index, 1)
-            }
-          }
-          return {...message, labels: message.labels}
-        })
-        this.updateMessage({command: "removeLabel", messageIds, "label": newLabel})
-        break
-      }
-      case "delete": {
-        updatedMessages = this.state.messages.filter((message) => {
-          return (!message.selected)
-        })
-        this.updateMessage({command: "delete", messageIds})
-        break
-      }
-      default: {
-        updateState = false
-        break
-      }
-    }
-    if (updateState) {
-      this.setState({...this.state, messages: updatedMessages})
-    }
-
-  }
-
   render() {
     return (
       <div className="App">
@@ -133,7 +64,6 @@ class App extends React.Component {
         </header>
         <Toolbar
           openComposeHandler={this.handleOpenCompose.bind(this)}
-          toolbarHandler={this.handleToolbarChange.bind(this)}
         />
         <ComposeForm
           composeHandler={this.handleCompose.bind(this)}

@@ -1,7 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Enum from 'es6-enum'
 import Pluralize from 'pluralize'
+import { selectMessage } from '../actions/selectMessage'
 
 const SELECTTYPE = Enum("NONE", "SOME", "ALL")
 
@@ -18,7 +20,7 @@ const selectedType = (messages) => {
   return selectedType
 }
 
-const Toolbar = ({messages, toolbarHandler, openComposeHandler}) => {
+const Toolbar = ({messages, selectMessage, openComposeHandler}) => {
 
   const labels = [
     {text: 'dev'}, {text: 'personal'}, {text: 'gschool'}
@@ -42,6 +44,88 @@ const Toolbar = ({messages, toolbarHandler, openComposeHandler}) => {
       default: break
     }
     return selectedStyle
+  }
+
+  const toolbarHandler = (request) => {
+    let updatedMessages
+    let updateState = true
+    let selectedMessageIds = messages.filter((message) => message.selected).map((message) => message.id)
+    const command = request.currentTarget.id
+    switch (command) {
+      case "select_messages": {
+        const selected =
+        selectedType(messages) === SELECTTYPE.NONE ||
+        selectedType(messages) === SELECTTYPE.SOME
+        const messageIds = messages.map((message) => {
+          return message.id
+        })
+        selectMessage({messageIds, selected})
+        break
+      }
+      case "mark_as_read": {
+        updatedMessages = this.state.messages.map((message) =>
+           message.selected  ? {...message, read: true} : message)
+        this.updateMessage(
+          {command: "read",
+          messageIds: selectedMessageIds,
+          "read": true}
+        )
+        break
+      }
+      case "mark_as_unread": {
+        updatedMessages = this.state.messages.map((message) =>
+           message.selected  ? {...message, read: false} : message)
+        this.updateMessage(
+          {command: "read",
+          messageIds: selectedMessageIds,
+          "read": false}
+        )
+        break
+      }
+      case "apply_label": {
+        let newLabel = request.currentTarget.value
+        updatedMessages = this.state.messages.map((message) => {
+          if (message.selected && message.labels.findIndex((label) => (label === newLabel)) < 0) {
+            message.labels.push(newLabel)
+          }
+          return {...message, labels: message.labels}
+        })
+        this.updateMessage(
+          {command: "addLabel",
+          messageIds: selectedMessageIds,
+          "label": newLabel}
+        )
+        break
+      }
+      case "remove_label": {
+        let newLabel = request.currentTarget.value
+        updatedMessages = this.state.messages.map((message) => {
+          if (message.selected) {
+            let index = message.labels.findIndex((label) => (label === newLabel))
+            if (index >= 0) {
+              message.labels.splice(index, 1)
+            }
+          }
+          return {...message, labels: message.labels}
+        })
+        this.updateMessage(
+          {command: "removeLabel",
+          messageIds: selectedMessageIds,
+          "label": newLabel}
+        )
+        break
+      }
+      case "delete": {
+        updatedMessages = this.state.messages.filter((message) => {
+          return (!message.selected)
+        })
+        this.updateMessage(
+          {command: "delete",
+          messageIds: selectedMessageIds}
+        )
+        break
+      }
+    }
   }
 
   const handleAddLabel = (evt) => {
@@ -136,6 +220,11 @@ const mapStateToProps = state => ({
   messages: state.App.messages
 })
 
+const mapDispatchToProps = dispatch => bindActionCreators({
+  selectMessage
+}, dispatch)
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Toolbar)
