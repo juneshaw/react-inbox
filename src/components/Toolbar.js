@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import Enum from 'es6-enum'
 import Pluralize from 'pluralize'
 import { selectMessage } from '../actions/selectMessage'
+import { updateMessage } from '../actions/updateMessage'
 
 const SELECTTYPE = Enum("NONE", "SOME", "ALL")
 
@@ -20,7 +21,7 @@ const selectedType = (messages) => {
   return selectedType
 }
 
-const Toolbar = ({messages, selectMessage, openComposeHandler}) => {
+const Toolbar = ({messages, selectMessage, updateMessage, openComposeHandler}) => {
 
   const labels = [
     {text: 'dev'}, {text: 'personal'}, {text: 'gschool'}
@@ -63,9 +64,7 @@ const Toolbar = ({messages, selectMessage, openComposeHandler}) => {
         break
       }
       case "mark_as_read": {
-        updatedMessages = this.state.messages.map((message) =>
-           message.selected  ? {...message, read: true} : message)
-        this.updateMessage(
+        updateMessage(
           {command: "read",
           messageIds: selectedMessageIds,
           "read": true}
@@ -73,9 +72,7 @@ const Toolbar = ({messages, selectMessage, openComposeHandler}) => {
         break
       }
       case "mark_as_unread": {
-        updatedMessages = this.state.messages.map((message) =>
-           message.selected  ? {...message, read: false} : message)
-        this.updateMessage(
+        updateMessage(
           {command: "read",
           messageIds: selectedMessageIds,
           "read": false}
@@ -90,7 +87,7 @@ const Toolbar = ({messages, selectMessage, openComposeHandler}) => {
           }
           return {...message, labels: message.labels}
         })
-        this.updateMessage(
+        updateMessage(
           {command: "addLabel",
           messageIds: selectedMessageIds,
           "label": newLabel}
@@ -108,7 +105,7 @@ const Toolbar = ({messages, selectMessage, openComposeHandler}) => {
           }
           return {...message, labels: message.labels}
         })
-        this.updateMessage(
+        updateMessage(
           {command: "removeLabel",
           messageIds: selectedMessageIds,
           "label": newLabel}
@@ -119,7 +116,7 @@ const Toolbar = ({messages, selectMessage, openComposeHandler}) => {
         updatedMessages = this.state.messages.filter((message) => {
           return (!message.selected)
         })
-        this.updateMessage(
+        updateMessage(
           {command: "delete",
           messageIds: selectedMessageIds}
         )
@@ -221,7 +218,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  selectMessage
+  selectMessage,
+  updateMessage
 }, dispatch)
 
 export default connect(

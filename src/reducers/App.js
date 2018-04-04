@@ -64,8 +64,7 @@ export default (state = initialState, action) => {
           })
           break
         }
-        case "mark_as_read":
-        case "mark_as_unread": {
+        case "read": {
           messages = selectedMessages.map((message) => {
             return {...message, "read": action.message.read}
           })
@@ -85,7 +84,7 @@ export default (state = initialState, action) => {
       })
       return {
         ...state,
-        messages: [...updatedMessages]
+        "messages": updatedMessages
       }
     }
     default:
