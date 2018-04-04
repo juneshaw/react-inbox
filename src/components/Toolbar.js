@@ -48,8 +48,6 @@ const Toolbar = ({messages, selectMessage, updateMessage, openComposeHandler}) =
   }
 
   const toolbarHandler = (request) => {
-    let updatedMessages
-    let updateState = true
     let selectedMessageIds = messages.filter((message) => message.selected).map((message) => message.id)
     const command = request.currentTarget.id
     switch (command) {
@@ -81,12 +79,6 @@ const Toolbar = ({messages, selectMessage, updateMessage, openComposeHandler}) =
       }
       case "apply_label": {
         let newLabel = request.currentTarget.value
-        updatedMessages = messages.map((message) => {
-          if (message.selected && message.labels.findIndex((label) => (label === newLabel)) < 0) {
-            message.labels.push(newLabel)
-          }
-          return {...message, labels: message.labels}
-        })
         updateMessage(
           {command: "addLabel",
           messageIds: selectedMessageIds,
@@ -96,15 +88,6 @@ const Toolbar = ({messages, selectMessage, updateMessage, openComposeHandler}) =
       }
       case "remove_label": {
         let newLabel = request.currentTarget.value
-        updatedMessages = messages.map((message) => {
-          if (message.selected) {
-            let index = message.labels.findIndex((label) => (label === newLabel))
-            if (index >= 0) {
-              message.labels.splice(index, 1)
-            }
-          }
-          return {...message, labels: message.labels}
-        })
         updateMessage(
           {command: "removeLabel",
           messageIds: selectedMessageIds,
@@ -113,15 +96,13 @@ const Toolbar = ({messages, selectMessage, updateMessage, openComposeHandler}) =
         break
       }
       case "delete": {
-        updatedMessages = messages.filter((message) => {
-          return (!message.selected)
-        })
         updateMessage(
           {command: "delete",
           messageIds: selectedMessageIds}
         )
         break
       }
+      default: break
     }
   }
 

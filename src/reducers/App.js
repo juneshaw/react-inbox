@@ -9,7 +9,22 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
+
   let messageIndex, messages, updatedMessages, selectedMessages
+
+  const updateMessageState = () => {
+    return state.messages.map((stateMessage) =>  {
+      messageIndex = messages.findIndex((message) => {
+        return stateMessage.id === message.id
+      })
+      if (messageIndex >= 0) {
+        return messages[messageIndex]
+      } else {
+        return stateMessage
+      }
+    })
+  }
+
   switch (action.type) {
     case MESSAGES_RECEIVED_SUCCESS:
       return {...state, messages: action.messages}
@@ -44,6 +59,7 @@ export default (state = initialState, action) => {
           messages = selectedMessages.map((message) => {
             return {...message, "starred": action.message.star}
           })
+          updatedMessages = updateMessageState()
           break
         }
         case "addLabel": {
@@ -52,6 +68,7 @@ export default (state = initialState, action) => {
             message.labels = Array.from(new Set(newLabels))
             return message
           })
+          updatedMessages = updateMessageState()
           break
         }
         case "removeLabel": {
@@ -62,26 +79,24 @@ export default (state = initialState, action) => {
             }
             return message
           })
+          updatedMessages = updateMessageState()
           break
         }
         case "read": {
           messages = selectedMessages.map((message) => {
             return {...message, "read": action.message.read}
           })
+          updatedMessages = updateMessageState()
+          break
+        }
+        case "delete": {
+          updatedMessages = state.messages.filter((message) =>
+            {return (action.message.messageIds.indexOf(message.id) === -1)})
           break
         }
         default: break
       }
-      updatedMessages = state.messages.map((stateMessage) =>  {
-        messageIndex = messages.findIndex((message) => {
-          return stateMessage.id === message.id
-        })
-        if (messageIndex >= 0) {
-          return messages[messageIndex]
-        } else {
-          return stateMessage
-        }
-      })
+
       return {
         ...state,
         "messages": [...updatedMessages]

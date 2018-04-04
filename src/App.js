@@ -5,8 +5,6 @@ import './App.css';
 import Messages from './components/Messages'
 import ComposeForm from './components/ComposeForm'
 import Toolbar from './components/Toolbar'
-import { SELECTTYPE } from './components/Toolbar'
-import { selectedType } from './components/Toolbar'
 import { getMessages } from './actions/getMessages'
 import { addMessage } from './actions/addMessage'
 

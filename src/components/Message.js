@@ -31,35 +31,6 @@ const Message = ({message, updateMessage, selectMessage}) => {
     }
   }
 
-    //
-    // handleMessageChange = (request) => {
-    //   let updatedMessages = [...this.state.messages]
-    //   let messageIndex = this.findMessage(request.currentTarget.dataset.id)
-    //   if (messageIndex > -1) {
-    //     let message = updatedMessages[messageIndex]
-    //     let command = request.currentTarget.id
-    //     switch (request.currentTarget.id) {
-    //       case 'star': {
-    //         message.starred = !message.starred
-    //         this.updateMessage({command,  "messageIds": [message.id], "star": message.starred})
-    //         break
-    //       }
-    //       case 'select': {
-    //         message.selected = !message.selected
-    //         break
-    //       }
-    //       case 'read': {
-    //         if (!message.read) {
-    //           message.read = true
-    //           this.updateMessage({command,  "messageIds": [message.id], "read": message.read})
-    //         }
-    //         break
-    //       }
-    //       default: break
-    //     }
-    //     this.setState({...this.state, messages:updatedMessages})
-    //   }
-    // }
   return (
     <div className={`row message
                     ${message.read ? "read" : "unread"}
