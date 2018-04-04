@@ -1,10 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Toolbar from './Toolbar'
 import Message from './Message'
-import ComposeForm from './ComposeForm'
 
-const Messages = ({messages, handleMessageChange}) => {
+const Messages = ({messages}) => {
 
   return (
     <div className="container">
@@ -12,8 +10,7 @@ const Messages = ({messages, handleMessageChange}) => {
         return (
           <Message
             key={i}
-            message={message}
-            messagesHandler={handleMessageChange}/>
+            message={message}/>
         )
       })}
     </div>

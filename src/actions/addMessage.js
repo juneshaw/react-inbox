@@ -15,7 +15,8 @@ export const addMessage = (request) => {
       body: json.body,
       read: json.read,
       starred: json.starred,
-      labels: json.labels
+      labels: json.labels,
+      selected: false
     }
     dispatch({
       type: MESSAGE_ADDED_SUCCESS,
