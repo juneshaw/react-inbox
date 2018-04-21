@@ -10,13 +10,6 @@ import { addMessage } from './actions/addMessage'
 
 class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      messages: [],
-      composeOpen: false};
-  }
-
   async componentDidMount() {
     this.props.getMessages();
   }
