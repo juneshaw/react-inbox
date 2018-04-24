@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Enum from 'es6-enum'
 import Pluralize from 'pluralize'
+import { openCompose } from '../actions/composeMessage'
 import { selectMessage } from '../actions/selectMessage'
 import { updateMessage } from '../actions/updateMessage'
 
@@ -21,7 +22,7 @@ const selectedType = (messages) => {
   return selectedType
 }
 
-const Toolbar = ({messages, selectMessage, updateMessage, openComposeHandler}) => {
+const Toolbar = ({messages, openCompose, selectMessage, updateMessage}) => {
 
   const labels = [
     {text: 'dev'}, {text: 'personal'}, {text: 'gschool'}
@@ -128,7 +129,7 @@ const Toolbar = ({messages, selectMessage, updateMessage, openComposeHandler}) =
 
         <a className="btn btn-danger"
           id="compose_message"
-          onClick={openComposeHandler}>
+          onClick={openCompose}>
           <i className="fa fa-plus"></i>
         </a>
 
@@ -199,6 +200,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+  openCompose,
   selectMessage,
   updateMessage
 }, dispatch)

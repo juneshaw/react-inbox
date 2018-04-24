@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 import logger from 'redux-logger'
 
-const initialState = {}
+const initialState = {composeOpen: false, messages:[]}
 const middleware = [
   logger,
   thunk,

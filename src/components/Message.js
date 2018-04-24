@@ -4,8 +4,6 @@ import { bindActionCreators } from 'redux'
 import { updateMessage } from '../actions/updateMessage'
 import { selectMessage } from '../actions/selectMessage'
 
-
-
 const Message = ({message, updateMessage, selectMessage}) => {
 
   const messagesHandler = (evt) => {
@@ -80,16 +78,12 @@ const Message = ({message, updateMessage, selectMessage}) => {
   )
 }
 
-const mapStateToProps = state => ({
-  messages: state.App.messages
-})
-
 const mapDispatchToProps = dispatch => bindActionCreators({
   selectMessage,
   updateMessage
 }, dispatch)
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    null,
+    mapDispatchToProps
 )(Message)

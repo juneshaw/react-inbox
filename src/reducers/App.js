@@ -1,11 +1,13 @@
 import { MESSAGES_RECEIVED_SUCCESS } from '../actions/getMessages'
 import { MESSAGE_ADDED_SUCCESS } from '../actions/addMessage'
+import { COMPOSE_OPEN } from '../actions/composeMessage'
+import { COMPOSE_CLOSE } from '../actions/composeMessage'
 import { UPDATE_MESSAGE_SUCCESS } from '../actions/updateMessage'
 import { SELECT_MESSAGE_SUCCESS } from '../actions/selectMessage'
 
 const initialState = {
   messages: [],
-  composeOpen: false
+  isComposeOpen: false
 }
 
 export default (state = initialState, action) => {
@@ -102,6 +104,21 @@ export default (state = initialState, action) => {
         "messages": [...updatedMessages]
       }
     }
+
+    case COMPOSE_OPEN: {
+      return {
+        ...state,
+        isComposeOpen: true
+      }
+    }
+
+    case COMPOSE_CLOSE: {
+      return {
+        ...state,
+        isComposeOpen: false
+      }
+    }
+
     default:
       return state
   }
