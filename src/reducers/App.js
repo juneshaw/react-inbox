@@ -4,6 +4,7 @@ import { COMPOSE_OPEN } from '../actions/composeMessage'
 import { COMPOSE_CLOSE } from '../actions/composeMessage'
 import { UPDATE_MESSAGE_SUCCESS } from '../actions/updateMessage'
 import { SELECT_MESSAGE_SUCCESS } from '../actions/selectMessage'
+import { TOGGLE_STAR_SUCCESS } from '../actions/starMessage'
 
 const initialState = {
   messages: [],
@@ -40,14 +41,24 @@ export default (state = initialState, action) => {
         messages: [...updatedMessages]
       }
     }
+
+    case TOGGLE_STAR_SUCCESS: {
+      const messageIndex = state.messages.findIndex((message) => message.id === action.message.messageIds[0])
+      return {
+        ...state,
+        messages: [
+          ...state.messages.slice(0, messageIndex),
+          {
+            ...state.messages[messageIndex],
+            starred: action.message.star
+          },
+          ...state.messages.slice(messageIndex+1)
+        ]
+      }
+    }
+
     case UPDATE_MESSAGE_SUCCESS: {
       switch (action.message.command) {
-        case "star": {
-          messages = state.messages.map((message) => {
-            return {...message, "starred": action.message.star}
-          })
-          break
-        }
         case "addLabel": {
           messages = state.messages.map((message) => {
             if (action.message.messageIds.indexOf(message.id) !== -1) {
@@ -63,7 +74,7 @@ export default (state = initialState, action) => {
         case "removeLabel": {
           messages = state.messages.map((message) => {
             if (action.message.messageIds.indexOf(message.id) !== -1) {
-              const messageLabels = message.labels.filter(messageLabel => messageLabel != action.message.label)
+              const messageLabels = message.labels.filter(messageLabel => messageLabel !== action.message.label)
               return ({...message, labels: messageLabels})
             } else {
               return message

@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { updateMessage } from '../actions/updateMessage'
 import { selectMessage } from '../actions/selectMessage'
+import { starMessage } from '../actions/starMessage'
 
-const Message = ({message, updateMessage, selectMessage}) => {
+const Message = ({message, selectMessage, starMessage, updateMessage }) => {
 
   const messagesHandler = (evt) => {
     switch (evt.currentTarget.id) {
       case 'star': {
-        updateMessage({
+        starMessage({
           "command": evt.currentTarget.id,
           "messageIds": [parseInt(evt.currentTarget.dataset.id,  10)],
           "star": !JSON.parse(evt.currentTarget.dataset.starred)})
@@ -80,6 +81,7 @@ const Message = ({message, updateMessage, selectMessage}) => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   selectMessage,
+  starMessage,
   updateMessage
 }, dispatch)
 
