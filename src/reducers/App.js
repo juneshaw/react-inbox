@@ -12,20 +12,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
 
-  let messageIndex, messages, updatedMessages, selectedMessages
-
-  const updateMessageState = () => {
-    return state.messages.map((stateMessage) =>  {
-      messageIndex = messages.findIndex((message) => {
-        return stateMessage.id === message.id
-      })
-      if (messageIndex >= 0) {
-        return messages[messageIndex]
-      } else {
-        return stateMessage
-      }
-    })
-  }
+  let messageIndex, messages, updatedMessages, selectedMessages, messageLabels
 
   switch (action.type) {
     case MESSAGES_RECEIVED_SUCCESS:
@@ -54,45 +41,48 @@ export default (state = initialState, action) => {
       }
     }
     case UPDATE_MESSAGE_SUCCESS: {
-      selectedMessages = state.messages.filter((message) => {
-        return (action.message.messageIds.indexOf(message.id) !== -1)})
       switch (action.message.command) {
         case "star": {
-          messages = selectedMessages.map((message) => {
+          messages = state.messages.map((message) => {
             return {...message, "starred": action.message.star}
           })
-          updatedMessages = updateMessageState()
           break
         }
         case "addLabel": {
-          messages = selectedMessages.map((message) => {
-            const newLabels = [...message.labels, action.message.label]
-            message.labels = Array.from(new Set(newLabels))
-            return message
+          messages = state.messages.map((message) => {
+            if (action.message.messageIds.indexOf(message.id) !== -1) {
+              const newLabels = [...message.labels, action.message.label]
+              messageLabels = Array.from(new Set(newLabels))
+              return {...message, labels: messageLabels}
+            } else {
+              return message
+            }
           })
-          updatedMessages = updateMessageState()
           break
         }
         case "removeLabel": {
-          messages = selectedMessages.map((message) => {
-            const index = message.labels.findIndex((label) => (label === action.message.label))
-            if (index >= 0) {
-              message.labels.splice(index, 1)
+          messages = state.messages.map((message) => {
+            if (action.message.messageIds.indexOf(message.id) !== -1) {
+              const messageLabels = message.labels.filter(messageLabel => messageLabel != action.message.label)
+              return ({...message, labels: messageLabels})
+            } else {
+              return message
             }
-            return message
           })
-          updatedMessages = updateMessageState()
           break
         }
         case "read": {
-          messages = selectedMessages.map((message) => {
-            return {...message, "read": action.message.read}
+          messages = state.messages.map((message) => {
+            if (action.message.messageIds.indexOf(message.id) !== -1) {
+              return {...message, "read": action.message.read}
+            } else {
+              return message
+            }
           })
-          updatedMessages = updateMessageState()
           break
         }
         case "delete": {
-          updatedMessages = state.messages.filter((message) =>
+          messages = state.messages.filter((message) =>
             {return (action.message.messageIds.indexOf(message.id) === -1)})
           break
         }
@@ -101,7 +91,7 @@ export default (state = initialState, action) => {
 
       return {
         ...state,
-        "messages": [...updatedMessages]
+        messages
       }
     }
 
